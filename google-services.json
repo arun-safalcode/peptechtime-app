@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "432698432246",
+    "firebase_url": "https://peptechtime-default-rtdb.firebaseio.com",
+    "project_id": "peptechtime",
+    "storage_bucket": "peptechtime.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:432698432246:android:1424ea2acd7f0cc9b6aad7",
+        "android_client_info": {
+          "package_name": "com.peptechtime.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "432698432246-28q9jcj0jlo979qsq48caq0f480pbvev.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_mtYqzkZuCZN159Wh42aXvAUxMRj0OyU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "432698432246-28q9jcj0jlo979qsq48caq0f480pbvev.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

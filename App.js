@@ -1,20 +1,69 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+const Stack = createNativeStackNavigator();
+import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { useFonts } from "expo-font";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import SearchScreen from "./screens/SearchScreen";
+import Home from "./screens/Home";
+import Details from "./screens/Details";
+import LoginScreen from "./screens/LoginScreen";
+import Register from "./screens/Register";
+import registerNNPushToken, { getPushDataObject } from 'native-notify';
 
-export default function App() {
+const App = () => {  
+  registerNNPushToken(9590, 'RIjT7ppebM4Hcf4PrfRDcP');
+  const pushDataObject = getPushDataObject();
+
+  // useEffect(() => {
+  //   Alert.alert(pushDataObject)
+  // }, [pushDataObject]);
+
+  const [hideSplashScreen, setHideSplashScreen] = React.useState(true);
+  const [fontsLoaded, error] = useFonts({
+    Poppins_black: require("./assets/fonts/Poppins_black.ttf"),
+    Nunito_extrabold: require("./assets/fonts/Nunito_extrabold.ttf"),
+  });
+
+  if (!fontsLoaded && !error) {
+    return null;
+  }
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <NavigationContainer>
+            {hideSplashScreen ? (
+              <Stack.Navigator screenOptions={{ headerShown: true }}>
+                <Stack.Screen 
+                name="Home" 
+                component={Home} 
+                options={{ headerShown: false }}
+                />
+                <Stack.Screen 
+                name="Details" 
+                component={Details} 
+                options={{ headerShown: false }}
+                />
+                <Stack.Screen 
+                name="SearchScreen" 
+                component={SearchScreen} 
+                options={{ headerShown: false }}
+                />
+                <Stack.Screen 
+                name="Register" 
+                component={Register} 
+                options={{ headerShown: false }}
+                />
+                <Stack.Screen 
+                name="LoginScreen" 
+                component={LoginScreen} 
+                options={{ headerShown: false }}
+                />
+              </Stack.Navigator>
+            ) : null}
+          </NavigationContainer>
+        </GestureHandlerRootView>
+    </>
   );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+};
+export default App;
