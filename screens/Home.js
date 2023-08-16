@@ -1,6 +1,6 @@
 import * as React from "react";
-import { StyleSheet, Text, View, RefreshControl, Animated } from "react-native";
-import { AntDesign } from '@expo/vector-icons';
+import { StyleSheet, Text, View, RefreshControl, Animated,Linking  } from "react-native";
+import { AntDesign, Feather } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Slider from "../components/Slider";
 import News from "../components/News";
@@ -32,7 +32,9 @@ const Home = () => {
   let pushDataObject = getPushDataObject();
   useEffect(() => {
     if (pushDataObject.id) {
-      let item = pushDataObject;
+      const item = {
+        id: pushDataObject.id
+      };
       navigation.navigate("Details", { item });
     }
   }, [pushDataObject])
@@ -94,6 +96,20 @@ const Home = () => {
     }
   };
 
+
+  const handleYouTubeButtonClick = () => {
+    const youtubeURL = 'https://www.youtube.com/channel/UCNkKlUNygj1eRsp_dfMJJ1g'; // Replace with your YouTube URL
+    Linking.openURL(youtubeURL)
+      .catch(error => console.error('Error opening YouTube URL:', error));
+  };
+  
+  const handleFacebookButtonClick = () => {
+    const facebookURL = 'https://www.facebook.com/peptechtimemp/'; // Replace with your Facebook URL
+    Linking.openURL(facebookURL)
+      .catch(error => console.error('Error opening Facebook URL:', error));
+  };
+
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}
     >
@@ -113,19 +129,32 @@ const Home = () => {
             source={require('../assets/logo.png')}
             resizeMode="contain"
           />
-          <TouchableRipple
-            onPress={() => {
-              navigation.navigate('SearchScreen');
-            }}
-            rippleColor="rgba(0, 0, 0, 0.32)" // Customize the ripple color here
-          >
-            <AntDesign
-              name="search1"
-              style={{ marginRight: 5, padding: 5 }}
-              size={20}
-              color="black"
-            />
-          </TouchableRipple>
+          <View style={{ flexDirection: 'row' }} >
+
+            <TouchableRipple
+              rippleColor="rgba(0, 0, 0, 0.32)" // Customize the ripple color here
+              onPress={handleYouTubeButtonClick}
+            >
+              <Feather
+                name="youtube"
+                size={26}
+                color="#990F0F"
+                style={{ marginRight: 0, padding: 5 }}
+              />
+            </TouchableRipple>
+            <TouchableRipple
+              rippleColor="rgba(0, 0, 0, 0.32)" // Customize the ripple color here
+              onPress={handleFacebookButtonClick}
+            >
+              <AntDesign
+                name="facebook-square"
+                size={24}
+                color="#990F0F"
+                style={{ marginRight: 0, padding: 5 }}
+              />
+            </TouchableRipple>
+          </View>
+
 
         </View>
 

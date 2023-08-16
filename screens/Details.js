@@ -21,7 +21,7 @@ import { WebView } from 'react-native-webview'; // Import WebView from react-nat
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Octicons } from '@expo/vector-icons';
 import moment from 'moment';
-
+import FullScreenImage from '../components/FullScreenImage';
 
 const Details = ({ route }) => {
   const { width } = useWindowDimensions();
@@ -29,9 +29,19 @@ const Details = ({ route }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  
+
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedImage(null);
+  };
 
   const { item } = route.params;
-  
   useEffect(() => {
     fetchPost();
   }, [item.id]);
@@ -124,12 +134,16 @@ const Details = ({ route }) => {
           <View>
             {posts.length > 0 ? (
               <View style={styles.content}>
-                <Image
-                  source={{
-                    uri: posts[0]._embedded['wp:featuredmedia'][0].source_url,
-                  }}
-                  style={{ height: 400 }}
-                />
+                <TouchableOpacity onPress={() => handleImageClick(posts[0]._embedded['wp:featuredmedia'][0].source_url)}>
+                {posts._embedded && posts._embedded['wp:featuredmedia'] && posts._embedded['wp:featuredmedia'][0] ? (
+              <Image
+                source={{ uri: posts._embedded['wp:featuredmedia'][0].source_url }}
+                style={{ height: 400}}
+                loadingIndicatorSource={require('../assets/icon.png')}
+              />
+            ) : null}
+                </TouchableOpacity>
+                
                 <View style={styles.intro}>
                   <Text style={{ fontSize: 22, fontWeight: '800' }}>
                     {posts[0].title.rendered}
@@ -159,7 +173,9 @@ const Details = ({ route }) => {
                     <RelatedNews categoryId={item.categories[0]} />
                   </View>
                 </View>
+                <FullScreenImage imageUrl={selectedImage} visible={selectedImage !== null} onClose={handleCloseModal} />
               </View>
+              
             ) : (
               <Text>No post found.</Text>
             )}
