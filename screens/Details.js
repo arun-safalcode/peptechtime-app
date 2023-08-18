@@ -23,7 +23,7 @@ import { Octicons } from '@expo/vector-icons';
 import moment from 'moment';
 import FullScreenImage from '../components/FullScreenImage';
 
-const Details = ({ route }) => {
+const Details = ({ route }) => { 
   const { width } = useWindowDimensions();
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -135,13 +135,18 @@ const Details = ({ route }) => {
             {posts.length > 0 ? (
               <View style={styles.content}>
                 <TouchableOpacity onPress={() => handleImageClick(posts[0]._embedded['wp:featuredmedia'][0].source_url)}>
-                {posts._embedded && posts._embedded['wp:featuredmedia'] && posts._embedded['wp:featuredmedia'][0] ? (
+                {posts[0]._embedded && posts[0]._embedded['wp:featuredmedia'] && posts[0]._embedded['wp:featuredmedia'][0] ? (
               <Image
-                source={{ uri: posts._embedded['wp:featuredmedia'][0].source_url }}
+                source={{ uri: posts[0]._embedded['wp:featuredmedia'][0].source_url }}
                 style={{ height: 400}}
                 loadingIndicatorSource={require('../assets/icon.png')}
               />
-            ) : null}
+            ) : <Image
+                source={{ uri: "https://peptechtime.s3.ap-south-1.amazonaws.com/wp-content/uploads/2023/03/09193925/Peptech-Time-New-Logo-300x71-1.png" }}
+                style={{ height: 400}}
+                loadingIndicatorSource={require('../assets/icon.png')}
+                />
+            }
                 </TouchableOpacity>
                 
                 <View style={styles.intro}>

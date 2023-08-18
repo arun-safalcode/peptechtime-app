@@ -21,7 +21,7 @@ const Slider = ({ refreshing }) => {
 
     try {
       const response = await axios.get(
-        `https://peptechtime.com/wp-json/wp/v2/posts?_embed&page=${page}&per_page=5`
+        `https://peptechtime.com/wp-json/wp/v2/posts?_embed&page=${page}&per_page=1&categories=20&_order=desc&_sort=date`
       );
 
       const modifiedPosts = await Promise.all(
@@ -94,8 +94,8 @@ const Slider = ({ refreshing }) => {
         data={posts}
         renderItem={renderItem}
         hasParallaxImages={true}
-        autoplay={true} // Enable autoplay
-        autoplayInterval={3000} // Set autoplay interval in milliseconds
+        autoplay={false} // Enable autoplay
+        // autoplayInterval={3000} // Set autoplay interval in milliseconds
       />
     </View>
   );

@@ -21,7 +21,7 @@ const SearchNews = ({ searchData, refreshing, scroll }) => {
 
     try {
       const response = await axios.get(
-        `https://peptechtime.com/wp-json/wp/v2/posts?_embed&page=${page}&per_page=5&search=${searchData}`
+        `https://peptechtime.com/wp-json/wp/v2/posts?_embed&page=${page}&per_page=5&search=${searchData}&_order=desc&_sort=date`
       );
 
       const modifiedPosts = await Promise.all(

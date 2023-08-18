@@ -53,9 +53,7 @@ const Home = () => {
     }
   };
   const filterCategoryNews = (id, name) => {
-    setClicked(true)
-    setCatid(id)
-    setCatName(name)
+    navigation.navigate("Search", {id, name})
   }
   useEffect(() => {
     fetchCategories();

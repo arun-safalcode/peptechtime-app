@@ -21,7 +21,7 @@ const News = ({ refreshing, scroll }) => {
 
     try {
       const response = await axios.get(
-        `https://peptechtime.com/wp-json/wp/v2/posts?_embed&page=${page}&per_page=10`
+        `https://peptechtime.com/wp-json/wp/v2/posts?_embed&page=${page}&per_page=10&_order=desc&_sort=date`
       );
   
       const modifiedPosts = await Promise.all(
@@ -71,7 +71,7 @@ const News = ({ refreshing, scroll }) => {
         style={styles.newsItem}
         key={item.id}
         onPress={() => navigation.navigate('Details', { item })}
-      >
+      > 
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           {/* Left View  */}
           <View style={styles.newsLeft}>

@@ -16,7 +16,7 @@ import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/core";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Octicons } from '@expo/vector-icons';
-const SearchScreen = () => {
+const SearchScreen = ({ route }) => {
   const [categories, setCategories] = useState([]);
   const [categoryClicked, setClicked] = useState(false);
   const [catid,setCatid] = useState('');
@@ -28,7 +28,7 @@ const SearchScreen = () => {
   const [scrollEnd, setScrollEnd] = useState(true);
   const scrollY = useRef(new Animated.Value(0)).current;
   const [scrollStatus, setScrollStatus] = useState(false)
-
+  
     const fetchCategories = async () => {
       try {
           const response = await axios.get('https://peptechtime.com/wp-json/wp/v2/categories?has_news=true&order=desc&orderby=name');
@@ -49,6 +49,9 @@ const SearchScreen = () => {
   useEffect(() => {
     fetchCategories();
   }, []);
+  useEffect(()=>{
+    filterCategoryNews(route.params.id,route.params.name)
+  },[route.params])
 
   const onRefresh = async () => {
     setRefreshing(true); // Set refreshing state to true

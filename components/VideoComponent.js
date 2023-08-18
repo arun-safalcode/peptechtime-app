@@ -23,7 +23,7 @@ const VideoComponent = () => {
 
         try {
             const response = await axios.get(
-                `https://peptechtime.com/wp-json/wp/v2/videos?page=${page}&per_page=5`
+                `https://peptechtime.com/wp-json/wp/v2/videos?page=${page}&per_page=5&_order=desc&_sort=date`
             );
 
             const modifiedPosts = await Promise.all(
