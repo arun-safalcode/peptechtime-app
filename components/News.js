@@ -59,8 +59,8 @@ const News = ({ refreshing, scroll }) => {
   }, [scroll]);
   
   useEffect(() => {
-    fetchPosts();
     setPosts([]);
+    fetchPosts();
   }, [refreshing])
 
 

@@ -67,10 +67,6 @@ const HomeStack = () => {
 
 
 const App = () => {
-
-  
-
-  
   registerNNPushToken(9590, 'RIjT7ppebM4Hcf4PrfRDcP');
   const pushDataObject = getPushDataObject();
 

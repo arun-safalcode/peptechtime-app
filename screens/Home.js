@@ -136,13 +136,12 @@ const Home = () => {
         console.log('Error retrieving selected location:', error);
       }
     }
-  
+
     fetchSelectedLocation();
   }, []);
 
   const handleSelectLocation = async (itemValue) => {
-    setSelectedLocation(itemValue)
-    if (itemValue !== null && itemValue !== undefined) {
+    if (selectedLocation !== null && selectedLocation !== undefined) {
       try {
         await AsyncStorage.setItem('selectedLocation', itemValue);
         setSelectedLocation(itemValue);
@@ -153,6 +152,7 @@ const Home = () => {
       console.log('Invalid value: null or undefined');
     }
   };
+
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}
@@ -243,7 +243,10 @@ const Home = () => {
           </ScrollView>
           <Picker
             selectedValue={selectedLocation}
-            onValueChange={(itemValue, itemIndex) => handleSelectLocation(itemValue)}
+            onValueChange={(itemValue, itemIndex) => {
+              setSelectedLocation(itemValue);
+              handleSelectLocation(itemValue); // Call your second function here
+            }}
           >
             <Picker.Item label="जिला चुनें" value="0" TouchableRipple={true} style={styles.locationText} />
             <Picker.Item label="मध्यप्रदेश" value="94" TouchableRipple={true} style={styles.locationText} />
@@ -254,7 +257,7 @@ const Home = () => {
             <Picker.Item label="" value="" enabled={false} TouchableRipple />
           </Picker>
           <View style={{ flexDirection: 'row' }}>
-            {selectedLocation != '0' ? <Text onPress={() => setSelectedLocation('0')} style={styles.clearFilter} >जिला रिसेट करें</Text> : ''}
+            {selectedLocation != '0' ? <Text onPress={() => handleSelectLocation('0')} style={styles.clearFilter} >जिला रिसेट करें</Text> : ''}
             {/* <AntDesign name="arrowright" size={24} color="#08294A" /> */}
           </View>
         </View>

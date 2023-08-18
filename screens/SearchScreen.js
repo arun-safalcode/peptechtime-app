@@ -50,7 +50,9 @@ const SearchScreen = ({ route }) => {
     fetchCategories();
   }, []);
   useEffect(()=>{
-    filterCategoryNews(route.params.id,route.params.name)
+    if(route.params != undefined){
+      filterCategoryNews(route.params.id,route.params.name)
+    }
   },[route.params])
 
   const onRefresh = async () => {
