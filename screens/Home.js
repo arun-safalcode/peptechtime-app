@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, Text, View, RefreshControl, Animated,Linking   } from "react-native";
+import { StyleSheet, Text, View, RefreshControl, Animated, Linking } from "react-native";
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Slider from "../components/Slider";
@@ -17,6 +17,9 @@ import { useNavigation } from "@react-navigation/core";
 import { getPushDataObject } from 'native-notify';
 import { Entypo } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
@@ -56,7 +59,7 @@ const Home = () => {
     }
   };
   const filterCategoryNews = (id, name) => {
-    navigation.navigate("Search", {id, name})
+    navigation.navigate("Search", { id, name })
   }
   useEffect(() => {
     fetchCategories();
@@ -104,18 +107,18 @@ const Home = () => {
     Linking.openURL(youtubeURL)
       .catch(error => console.error('Error opening YouTube URL:', error));
   };
-  
+
   const handleFacebookButtonClick = () => {
     const facebookURL = 'https://www.facebook.com/peptechtimemp/'; // Replace with your Facebook URL
     Linking.openURL(facebookURL)
       .catch(error => console.error('Error opening Facebook URL:', error));
   };
 
-  const handleUserButtonClick = () =>{
+  const handleUserButtonClick = () => {
     navigation.navigate('LoginScreen')
   }
 
-  const fetchSubCategory = async () =>{
+  const fetchSubCategory = async () => {
     try {
       const response = await axios.get('https://peptechtime.com/wp-json/wp/v2/categories?parent=94&per_page=100');
       setSubcategories(response.data);
@@ -124,6 +127,32 @@ const Home = () => {
     }
   }
 
+  useEffect(() => {
+    async function fetchSelectedLocation() {
+      try {
+        const storedValue = await AsyncStorage.getItem('selectedLocation');
+        setSelectedLocation(storedValue)
+      } catch (error) {
+        console.log('Error retrieving selected location:', error);
+      }
+    }
+  
+    fetchSelectedLocation();
+  }, []);
+
+  const handleSelectLocation = async (itemValue) => {
+    setSelectedLocation(itemValue)
+    if (itemValue !== null && itemValue !== undefined) {
+      try {
+        await AsyncStorage.setItem('selectedLocation', itemValue);
+        setSelectedLocation(itemValue);
+      } catch (error) {
+        console.log('Error storing selected location:', error);
+      }
+    } else {
+      console.log('Invalid value: null or undefined');
+    }
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}
@@ -146,7 +175,7 @@ const Home = () => {
           />
           <View style={{ flexDirection: 'row' }} >
 
-          
+
             <TouchableRipple
               rippleColor="rgba(0, 0, 0, 0.32)" // Customize the ripple color here
               onPress={handleYouTubeButtonClick}
@@ -182,7 +211,7 @@ const Home = () => {
               style={{ marginRight: 0, padding: 5 }}
             />
           </TouchableRipple> */}
- 
+
           </View>
 
 
@@ -214,20 +243,20 @@ const Home = () => {
           </ScrollView>
           <Picker
             selectedValue={selectedLocation}
-            onValueChange={(itemValue, itemIndex) => setSelectedLocation(itemValue)}
+            onValueChange={(itemValue, itemIndex) => handleSelectLocation(itemValue)}
           >
-            <Picker.Item label="जिला चुनें" value="0" TouchableRipple={true} style={styles.locationText}  />
-            <Picker.Item label="मध्यप्रदेश" value="94" TouchableRipple={true} style={styles.locationText}  />
+            <Picker.Item label="जिला चुनें" value="0" TouchableRipple={true} style={styles.locationText} />
+            <Picker.Item label="मध्यप्रदेश" value="94" TouchableRipple={true} style={styles.locationText} />
             {subcategories.map(subCategory => (
 
-              <Picker.Item  key={subCategory.id} label={subCategory.name} value={subCategory.id.toString()} TouchableRipple style={styles.locationText}  />
+              <Picker.Item key={subCategory.id} label={subCategory.name} value={subCategory.id.toString()} TouchableRipple style={styles.locationText} />
             ))}
             <Picker.Item label="" value="" enabled={false} TouchableRipple />
           </Picker>
           <View style={{ flexDirection: 'row' }}>
-            {selectedLocation != '0'?<Text onPress={()=>setSelectedLocation('0')} style={styles.clearFilter} >जिला रिसेट करें</Text>:''}
+            {selectedLocation != '0' ? <Text onPress={() => setSelectedLocation('0')} style={styles.clearFilter} >जिला रिसेट करें</Text> : ''}
             {/* <AntDesign name="arrowright" size={24} color="#08294A" /> */}
-            </View>
+          </View>
         </View>
         <View>
           <View style={styles.sliderHeader} >
@@ -298,8 +327,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'normal'
   },
-  locationText:{
-    fontSize: 18, 
+  locationText: {
+    fontSize: 18,
     fontWeight: '800'
   }
 
