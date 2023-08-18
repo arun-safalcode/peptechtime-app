@@ -158,7 +158,7 @@ const Home = () => {
             </TouchableRipple>
 
             {/* Login button  */}
-            <TouchableRipple
+            {/* <TouchableRipple
               rippleColor="rgba(0, 0, 0, 0.32)" // Customize the ripple color here
               onPress={handleUserButtonClick}
             >
@@ -168,8 +168,8 @@ const Home = () => {
               color="#990F0F"
               style={{ marginRight: 0, padding: 5 }}
             />
-          </TouchableRipple>
-
+          </TouchableRipple> */}
+ 
           </View>
 
 
@@ -199,6 +199,7 @@ const Home = () => {
               ))}
             </View>
           </ScrollView>
+          
         </View>
         <View>
           <View style={styles.sliderHeader} >

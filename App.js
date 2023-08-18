@@ -12,6 +12,9 @@ import Register from "./screens/Register";
 import Video from "./screens/Video";
 import { AntDesign, Feather,Ionicons  } from '@expo/vector-icons';
 import registerNNPushToken, { getPushDataObject } from 'native-notify';
+import { Permissions } from 'expo';
+import { Notifications } from 'expo';
+
 import { View,Text } from "react-native";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -64,6 +67,10 @@ const HomeStack = () => {
 
 
 const App = () => {
+
+  
+
+  
   registerNNPushToken(9590, 'RIjT7ppebM4Hcf4PrfRDcP');
   const pushDataObject = getPushDataObject();
 
