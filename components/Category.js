@@ -19,7 +19,7 @@ const Category = () => {
           const mainCategories = categoriesData.filter(category => category.parent === 0);
           setCategories(mainCategories);
       } catch (error) {
-          console.error('Error fetching categories:', error);
+        //   console.error('Error fetching categories:', error);
       }
   };
 
@@ -29,17 +29,17 @@ const Category = () => {
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false} >
         <View style={{ flexDirection: 'row' }}>
-            {categories.map((category) => (
+            {categories.map((category, index) => (
                 <Pressable
                   onPress={() => navigation.navigate('NewsByCategoryScreen', { category })}
-                  key={category.id}
+                  key={index}
                 >
                     <LinearGradient
                     colors={['#990F0F', '#FF8086']} // Specify your gradient colors
                     start={{ x: 0, y: 0 }} // Start point of the gradient
                     end={{ x: 1, y: 0 }} // End point of the gradient\
                     style={styles.categoryItem}
-                    key={category.id}
+                    key={index}
                     >
                         <View>
                             <Text style={{color:"#fff", fontWeight:700}}>{category.name}</Text>

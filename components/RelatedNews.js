@@ -58,10 +58,10 @@ const RelatedNews = ({ categoryId }) => {
 
   return (
     <View>
-      {posts.map((item) => (
+      {posts.map((item, index) => (
         <TouchableOpacity
         style={styles.newsItem}
-        key={item.id}
+        key={index}
         onPress={() => navigation.navigate('Details', { item })}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>

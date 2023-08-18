@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, Text, View, RefreshControl, Animated,Linking  } from "react-native";
+import { StyleSheet, Text, View, RefreshControl, Animated,Linking   } from "react-native";
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Slider from "../components/Slider";
@@ -16,9 +16,11 @@ import { TouchableRipple } from 'react-native-paper';
 import { useNavigation } from "@react-navigation/core";
 import { getPushDataObject } from 'native-notify';
 import { Entypo } from '@expo/vector-icons';
+import { Picker } from '@react-native-picker/picker';
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
   const [categoryClicked, setClicked] = useState(false);
   const [catid, setCatid] = useState('');
   const [catname, setCatName] = useState('');
@@ -28,6 +30,7 @@ const Home = () => {
   const [scrollEnd, setScrollEnd] = useState(true);
   const scrollY = useRef(new Animated.Value(0)).current;
   const [scrollStatus, setScrollStatus] = useState(false)
+  const [selectedLocation, setSelectedLocation] = useState('0');
 
   let pushDataObject = getPushDataObject();
   useEffect(() => {
@@ -57,6 +60,7 @@ const Home = () => {
   }
   useEffect(() => {
     fetchCategories();
+    fetchSubCategory();
   }, []);
 
   const onRefresh = async () => {
@@ -109,6 +113,15 @@ const Home = () => {
 
   const handleUserButtonClick = () =>{
     navigation.navigate('LoginScreen')
+  }
+
+  const fetchSubCategory = async () =>{
+    try {
+      const response = await axios.get('https://peptechtime.com/wp-json/wp/v2/categories?parent=94&per_page=100');
+      setSubcategories(response.data);
+    } catch (error) {
+      //   console.error('Error fetching categories:', error);
+    }
   }
 
 
@@ -199,7 +212,22 @@ const Home = () => {
               ))}
             </View>
           </ScrollView>
-          
+          <Picker
+            selectedValue={selectedLocation}
+            onValueChange={(itemValue, itemIndex) => setSelectedLocation(itemValue)}
+          >
+            <Picker.Item label="जिला चुनें" value="0" TouchableRipple={true} style={styles.locationText}  />
+            <Picker.Item label="मध्यप्रदेश" value="94" TouchableRipple={true} style={styles.locationText}  />
+            {subcategories.map(subCategory => (
+
+              <Picker.Item  key={subCategory.id} label={subCategory.name} value={subCategory.id.toString()} TouchableRipple style={styles.locationText}  />
+            ))}
+            <Picker.Item label="" value="" enabled={false} TouchableRipple />
+          </Picker>
+          <View style={{ flexDirection: 'row' }}>
+            {selectedLocation != '0'?<Text onPress={()=>setSelectedLocation('0')} style={styles.clearFilter} >जिला रिसेट करें</Text>:''}
+            {/* <AntDesign name="arrowright" size={24} color="#08294A" /> */}
+            </View>
         </View>
         <View>
           <View style={styles.sliderHeader} >
@@ -220,7 +248,7 @@ const Home = () => {
 
         <View style={{ marginTop: 20 }} >
           {/* Latest News  */}
-          {categoryClicked ? <>{refreshing ? <><NewsByCategory categoryId={catid} refreshing={refreshing} key="news" /></> : <><NewsByCategory categoryId={catid} scroll={scrollStatus} /></>}</> : <>{refreshing ? <News refreshing={refreshing} key="news" /> : <News scroll={scrollStatus} />}</>}
+          {selectedLocation != '0' ? <>{refreshing ? <><NewsByCategory categoryId={selectedLocation} refreshing={refreshing} key="news" /></> : <><NewsByCategory categoryId={selectedLocation} scroll={scrollStatus} /></>}</> : <>{refreshing ? <News refreshing={refreshing} key="news" /> : <News scroll={scrollStatus} />}</>}
         </View>
       </ScrollView>
 
@@ -270,6 +298,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'normal'
   },
+  locationText:{
+    fontSize: 18, 
+    fontWeight: '800'
+  }
 
 });
 
