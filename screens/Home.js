@@ -15,7 +15,7 @@ import NewsByCategory from '../components/NewsByCategory';
 import { TouchableRipple } from 'react-native-paper';
 import { useNavigation } from "@react-navigation/core";
 import { getPushDataObject } from 'native-notify';
-
+import { Entypo } from '@expo/vector-icons';
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
@@ -107,6 +107,10 @@ const Home = () => {
       .catch(error => console.error('Error opening Facebook URL:', error));
   };
 
+  const handleUserButtonClick = () =>{
+    navigation.navigate('LoginScreen')
+  }
+
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}
@@ -129,6 +133,7 @@ const Home = () => {
           />
           <View style={{ flexDirection: 'row' }} >
 
+          
             <TouchableRipple
               rippleColor="rgba(0, 0, 0, 0.32)" // Customize the ripple color here
               onPress={handleYouTubeButtonClick}
@@ -151,6 +156,20 @@ const Home = () => {
                 style={{ marginRight: 0, padding: 5 }}
               />
             </TouchableRipple>
+
+            {/* Login button  */}
+            <TouchableRipple
+              rippleColor="rgba(0, 0, 0, 0.32)" // Customize the ripple color here
+              onPress={handleUserButtonClick}
+            >
+            <Entypo 
+              name="user" 
+              size={24} 
+              color="#990F0F"
+              style={{ marginRight: 0, padding: 5 }}
+            />
+          </TouchableRipple>
+
           </View>
 
 

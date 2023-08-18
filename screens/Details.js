@@ -31,8 +31,6 @@ const Details = ({ route }) => {
   const navigation = useNavigation();
   const [selectedImage, setSelectedImage] = useState(null);
 
-  
-
   const handleImageClick = (imageUrl) => {
     setSelectedImage(imageUrl);
   };
@@ -42,16 +40,23 @@ const Details = ({ route }) => {
   };
 
   const { item } = route.params;
+  let postid;
+  if(item.id){
+    postid = item.id;
+  }else{
+    postid = item['id'];
+  }
+
   useEffect(() => {
     fetchPost();
-  }, [item.id]);
+  }, [item]);
 
   const fetchPost = async () => {
     setIsLoading(true);
     try {
-      const postId = item.id;
+      const postId = postid;
       const response = await axios.get(
-        `https://peptechtime.com/wp-json/wp/v2/posts/${postId}?_embed`
+        `https://peptechtime.com/wp-json/wp/v2/posts/${postid}?_embed`
       );
 
       if (response.data) {
@@ -175,7 +180,7 @@ const Details = ({ route }) => {
                     Related News
                   </Text>
                   <View style={styles.related}>
-                    <RelatedNews categoryId={item.categories[0]} />
+                    <RelatedNews categoryId={posts[0].categories[0]} />
                   </View>
                 </View>
                 <FullScreenImage imageUrl={selectedImage} visible={selectedImage !== null} onClose={handleCloseModal} />
