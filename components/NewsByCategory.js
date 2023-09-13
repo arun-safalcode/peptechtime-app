@@ -56,9 +56,14 @@ const NewsByCategory = ({ categoryId, refreshing, scroll }) => {
   }, [page, categoryId]);
 
   useEffect(() => {
-    fetchPosts();
-    setPosts([])
-  }, [categoryId, refreshing]);
+    setPosts([]);
+    console.log("page=>"+page);
+    if(posts.length === 0){
+      console.log("news")
+      setPage(1)
+      fetchPosts();
+    }
+  }, [categoryId, refreshing])
 
   return (
     <View>

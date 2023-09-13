@@ -50,9 +50,9 @@ const Slider = ({ refreshing }) => {
   }, [page]);
 
   useEffect(() => {
+    setPosts([]);
     fetchPosts();
     carouselRef.current?.startAutoplay();
-    setPosts([]);
   }, [refreshing]);
 
   const renderItem = ({ item, index }, parallaxProps) => {

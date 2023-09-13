@@ -4,7 +4,7 @@ import { AntDesign, Feather } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Slider from "../components/Slider";
 import News from "../components/News";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView } from "react-native";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useRef } from "react";
@@ -76,9 +76,9 @@ const Home = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-    // setTimeout(() => {
+    setTimeout(() => {
       setRefreshing(false);
-    // }, 2000);
+    }, 3000);
   };
 
 
@@ -200,7 +200,7 @@ const Home = () => {
             </TouchableRipple>
 
             {/* Login button  */}
-            {/* <TouchableRipple
+            <TouchableRipple
               rippleColor="rgba(0, 0, 0, 0.32)" // Customize the ripple color here
               onPress={handleUserButtonClick}
             >
@@ -210,29 +210,43 @@ const Home = () => {
               color="#990F0F"
               style={{ marginRight: 0, padding: 5 }}
             />
-          </TouchableRipple> */}
+          </TouchableRipple>
 
           </View>
 
 
         </View>
         <ScrollView
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
-        onMomentumScrollEnd={handleEndReached}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        style={styles.scrollView}
+          onScroll={handleScroll}
+          scrollEventThrottle={16}
+          onMomentumScrollEnd={handleEndReached}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          style={styles.scrollView}
       >
         <View style={styles.category} >
           {/* Category  */}
           <ScrollView horizontal showsHorizontalScrollIndicator={false} >
             <View style={{ flexDirection: 'row' }}>
-              {categories.map((category) => (
+              {categories
+              .filter(category => category.id === 311 
+                || category.id === 94
+                || category.id === 321
+                || category.id === 316
+                || category.id === 317
+                || category.id === 318
+                || category.id === 10
+                || category.id === 319
+                || category.id === 320
+                || category.id === 96
+                ) 
+              .reverse()
+              .map((category, index) => (
+                <>
                 <Pressable
                   onPress={() => { filterCategoryNews(category.id, category.name) }}
-                  key={category.id}
+                  key={index}
                 >
                   <LinearGradient
                     colors={category.id === catid && categoryClicked ? ['#990F0F', '#FF8086'] : ['#fff', '#fff']} // Specify your gradient colors
@@ -246,6 +260,8 @@ const Home = () => {
                     </View>
                   </LinearGradient>
                 </Pressable>
+                </>
+                
               ))}
             </View>
           </ScrollView>
@@ -265,8 +281,7 @@ const Home = () => {
             <Picker.Item label="" value="" enabled={false} TouchableRipple />
           </Picker>
           <View style={{ flexDirection: 'row' }}>
-            {selectedLocation != null ? <Text onPress={() => handleSelectLocation(null)} style={styles.clearFilter} >जिला रिसेट करें</Text> : ''}
-            {/* <AntDesign name="arrowright" size={24} color="#08294A" /> */}
+            {selectedLocation != null ? <Text onPress={() => {handleSelectLocation(null);onRefresh()}} style={styles.clearFilter} >जिला रिसेट करें</Text> : ''}
           </View>
         </View>
         <View>
@@ -281,32 +296,22 @@ const Home = () => {
           {/* Post Slider  */}
           {categoryClicked ? '' :
             <>
-              {refreshing ? <><Slider refreshing={refreshing} key="newsslider" /></> : <><Slider /></>}
+            <Slider refreshing={refreshing} key="newsslider" />
+              {/* {refreshing ? <><Slider refreshing={refreshing} key="newsslider" /></> : <><Slider /></>} */}
             </>
           }
         </View>
-
         <View style={{ marginTop: 20 }}>
           {/* Latest News  */}
           {selectedLocation === null
           ?<>
-            {refreshing === true
-            ?
-            <><News refreshing={refreshing} key="newsref" /></>
-            :
-            <><News scroll={scrollStatus} /></>
-            }
-            
+            <><News scroll={scrollStatus} refreshing={refreshing} key="newsref2" /></>            
           </>
           :
           <>
-            <NewsByCategory categoryId={selectedLocation} scroll={scrollStatus} />
+            <><NewsByCategory categoryId={selectedLocation} refreshing={refreshing} scroll={scrollStatus} key="newscat" /></>
           </>
           }
-          {/* {selectedLocation != null ? 
-          <>{refreshing ? <><NewsByCategory categoryId={selectedLocation} refreshing={refreshing} key="news" /></> 
-        : <><NewsByCategory categoryId={selectedLocation} scroll={scrollStatus} /></>}</> 
-      : <>{refreshing ? <News refreshing={refreshing} key="news" /> : <News scroll={scrollStatus} />}</>} */}
         </View>
       </ScrollView>
 

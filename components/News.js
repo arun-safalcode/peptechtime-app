@@ -45,7 +45,6 @@ const News = ({ refreshing, scroll }) => {
 
   const loadMorePosts = () => {
     setPage((prevPage) => prevPage + 1);
-    console.log(page);
   };
 
   useEffect(() => {
@@ -60,8 +59,10 @@ const News = ({ refreshing, scroll }) => {
   
   useEffect(() => {
     setPosts([]);
+    console.log("page=>"+page);
     if(posts.length === 0){
-      console.log("o")
+      console.log("news")
+      setPage(1)
       fetchPosts();
     }
   }, [refreshing])
