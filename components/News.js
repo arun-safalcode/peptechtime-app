@@ -61,13 +61,14 @@ const News = ({ refreshing, scroll }) => {
   useEffect(() => {
     setPosts([]);
     if(posts.length === 0){
+      console.log("o")
       fetchPosts();
     }
   }, [refreshing])
 
 
   return (
-    <>
+    <View>
       {posts.map((item, index) => (
         <TouchableOpacity
         style={styles.newsItem}
@@ -118,7 +119,7 @@ const News = ({ refreshing, scroll }) => {
           <Text style={styles.loadMoreButtonText}>Load More</Text>
         </Pressable>
       )}
-    </>
+    </View>
   );
 };
 

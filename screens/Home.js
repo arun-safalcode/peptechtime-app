@@ -29,7 +29,7 @@ const Home = () => {
   const [catname, setCatName] = useState('');
   const [refreshing, setRefreshing] = useState(false); // Add refreshing state
   const navigation = useNavigation();
-  const scrollViewRef = React.useRef(null);
+  const scrollViewRef = useRef();
   const [scrollEnd, setScrollEnd] = useState(true);
   const scrollY = useRef(new Animated.Value(0)).current;
   const [scrollStatus, setScrollStatus] = useState(false)
@@ -76,9 +76,9 @@ const Home = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-    setTimeout(() => {
+    // setTimeout(() => {
       setRefreshing(false);
-    }, 2000);
+    // }, 2000);
   };
 
 
@@ -165,18 +165,7 @@ const Home = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}
     >
-      <ScrollView
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
-        onMomentumScrollEnd={handleEndReached}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        style={styles.scrollView}
-      >
-        <View>
-          
-        </View>
+      
         {/* Search Bar  */}
         <View style={styles.top}>
           <Image
@@ -227,7 +216,15 @@ const Home = () => {
 
 
         </View>
-
+        <ScrollView
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+        onMomentumScrollEnd={handleEndReached}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        style={styles.scrollView}
+      >
         <View style={styles.category} >
           {/* Category  */}
           <ScrollView horizontal showsHorizontalScrollIndicator={false} >
@@ -284,7 +281,7 @@ const Home = () => {
           {/* Post Slider  */}
           {categoryClicked ? '' :
             <>
-              {refreshing ? <><Slider refreshing={refreshing} key="news" /></> : <><Slider /></>}
+              {refreshing ? <><Slider refreshing={refreshing} key="newsslider" /></> : <><Slider /></>}
             </>
           }
         </View>
@@ -295,9 +292,9 @@ const Home = () => {
           ?<>
             {refreshing === true
             ?
-            <>{console.log("refreshed")}<News refreshing={refreshing} key="news" /></>
+            <><News refreshing={refreshing} key="newsref" /></>
             :
-            <>{console.log("not re")}<News scroll={scrollStatus} /></>
+            <><News scroll={scrollStatus} /></>
             }
             
           </>
