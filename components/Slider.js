@@ -21,7 +21,7 @@ const Slider = ({ refreshing }) => {
 
     try {
       const response = await axios.get(
-        `https://peptechtime.com/wp-json/wp/v2/posts?_embed&page=${page}&per_page=1&categories=20&_order=desc&_sort=date`
+        `https://peptechtime.com/wp-json/wp/v2/posts?_embed&page=${page}&per_page=1&categories=20&_order=desc`
       );
 
       const modifiedPosts = await Promise.all(

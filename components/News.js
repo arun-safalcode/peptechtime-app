@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, Pressable, ActivityIndicator, Animated, Easing } from 'react-native';
+import { View, Text, Image, Pressable, RefreshControl, ActivityIndicator, Animated, Easing } from 'react-native';
 import axios from 'axios';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
@@ -21,7 +21,7 @@ const News = ({ refreshing, scroll }) => {
 
     try {
       const response = await axios.get(
-        `https://peptechtime.com/wp-json/wp/v2/posts?_embed&page=${page}&per_page=10&_order=desc&_sort=date`
+        `https://peptechtime.com/wp-json/wp/v2/posts?_embed&page=${page}&per_page=10&_order=desc`
       );
   
       const modifiedPosts = await Promise.all(
@@ -60,12 +60,14 @@ const News = ({ refreshing, scroll }) => {
   
   useEffect(() => {
     setPosts([]);
-    fetchPosts();
+    if(posts.length === 0){
+      fetchPosts();
+    }
   }, [refreshing])
 
 
   return (
-    <View>
+    <>
       {posts.map((item, index) => (
         <TouchableOpacity
         style={styles.newsItem}
@@ -107,7 +109,7 @@ const News = ({ refreshing, scroll }) => {
             <Text>{moment(item.date).format('MMMM DD, YYYY')}</Text>
           </View>
         </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
       ))}
       {isLoading ? (
         <Skeleton /> // Show the skeleton loader while loading
@@ -116,7 +118,7 @@ const News = ({ refreshing, scroll }) => {
           <Text style={styles.loadMoreButtonText}>Load More</Text>
         </Pressable>
       )}
-    </View>
+    </>
   );
 };
 

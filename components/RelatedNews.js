@@ -20,7 +20,7 @@ const RelatedNews = ({ categoryId }) => {
 
     try {
       const response = await axios.get(
-        `https://peptechtime.com/wp-json/wp/v2/posts?_embed&page=${page}&per_page=5&categories=${categoryId}&_order=desc&_sort=date`
+        `https://peptechtime.com/wp-json/wp/v2/posts?_embed&page=${page}&per_page=5&categories=${categoryId}&_order=desc`
       );
 
       const modifiedPosts = await Promise.all(

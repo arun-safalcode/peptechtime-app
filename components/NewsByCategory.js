@@ -19,7 +19,7 @@ const NewsByCategory = ({ categoryId, refreshing, scroll }) => {
 
     try {
       const response = await axios.get(
-        `https://peptechtime.com/wp-json/wp/v2/posts?_embed&page=${page}&per_page=10&categories=${categoryId}&_order=desc&_sort=date`
+        `https://peptechtime.com/wp-json/wp/v2/posts?_embed&page=${page}&per_page=10&categories=${categoryId}&_order=desc`
       );
       console.log(response.data.length)
       const modifiedPosts = await Promise.all(

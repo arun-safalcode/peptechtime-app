@@ -33,7 +33,7 @@ const Home = () => {
   const [scrollEnd, setScrollEnd] = useState(true);
   const scrollY = useRef(new Animated.Value(0)).current;
   const [scrollStatus, setScrollStatus] = useState(false)
-  const [selectedLocation, setSelectedLocation] = useState('0');
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
   let pushDataObject = getPushDataObject();
   useEffect(() => {
@@ -68,6 +68,7 @@ const Home = () => {
 
   const onRefresh = async () => {
     setRefreshing(true); // Set refreshing state to true
+    // console.log("refreshing")
     try {
       // Fetch the latest data here
       // For example, you can call your fetchCategories function again
@@ -75,7 +76,9 @@ const Home = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-    setRefreshing(false); // Set refreshing state back to false after data fetching is done
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
   };
 
 
@@ -141,10 +144,15 @@ const Home = () => {
   }, []);
 
   const handleSelectLocation = async (itemValue) => {
-    if (selectedLocation !== null && selectedLocation !== undefined) {
+    if (selectedLocation != null || selectedLocation != undefined) {
       try {
-        await AsyncStorage.setItem('selectedLocation', itemValue);
-        setSelectedLocation(itemValue);
+        if(itemValue === null || itemValue === undefined){
+          await AsyncStorage.removeItem('selectedLocation');
+          setSelectedLocation(itemValue);
+        }else{
+          await AsyncStorage.setItem('selectedLocation', itemValue);
+          setSelectedLocation(itemValue);
+        }
       } catch (error) {
         console.log('Error storing selected location:', error);
       }
@@ -158,15 +166,18 @@ const Home = () => {
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}
     >
       <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
         onScroll={handleScroll}
         scrollEventThrottle={16}
         onMomentumScrollEnd={handleEndReached}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        style={styles.scrollView}
       >
+        <View>
+          
+        </View>
         {/* Search Bar  */}
-
         <View style={styles.top}>
           <Image
             style={styles.logo}
@@ -248,7 +259,7 @@ const Home = () => {
               handleSelectLocation(itemValue); // Call your second function here
             }}
           >
-            <Picker.Item label="जिला चुनें" value="0" TouchableRipple={true} style={styles.locationText} />
+            <Picker.Item label="जिला चुनें" value={null} TouchableRipple={true} style={styles.locationText} />
             <Picker.Item label="मध्यप्रदेश" value="94" TouchableRipple={true} style={styles.locationText} />
             {subcategories.map(subCategory => (
 
@@ -257,7 +268,7 @@ const Home = () => {
             <Picker.Item label="" value="" enabled={false} TouchableRipple />
           </Picker>
           <View style={{ flexDirection: 'row' }}>
-            {selectedLocation != '0' ? <Text onPress={() => handleSelectLocation('0')} style={styles.clearFilter} >जिला रिसेट करें</Text> : ''}
+            {selectedLocation != null ? <Text onPress={() => handleSelectLocation(null)} style={styles.clearFilter} >जिला रिसेट करें</Text> : ''}
             {/* <AntDesign name="arrowright" size={24} color="#08294A" /> */}
           </View>
         </View>
@@ -278,9 +289,27 @@ const Home = () => {
           }
         </View>
 
-        <View style={{ marginTop: 20 }} >
+        <View style={{ marginTop: 20 }}>
           {/* Latest News  */}
-          {selectedLocation != '0' ? <>{refreshing ? <><NewsByCategory categoryId={selectedLocation} refreshing={refreshing} key="news" /></> : <><NewsByCategory categoryId={selectedLocation} scroll={scrollStatus} /></>}</> : <>{refreshing ? <News refreshing={refreshing} key="news" /> : <News scroll={scrollStatus} />}</>}
+          {selectedLocation === null
+          ?<>
+            {refreshing === true
+            ?
+            <>{console.log("refreshed")}<News refreshing={refreshing} key="news" /></>
+            :
+            <>{console.log("not re")}<News scroll={scrollStatus} /></>
+            }
+            
+          </>
+          :
+          <>
+            <NewsByCategory categoryId={selectedLocation} scroll={scrollStatus} />
+          </>
+          }
+          {/* {selectedLocation != null ? 
+          <>{refreshing ? <><NewsByCategory categoryId={selectedLocation} refreshing={refreshing} key="news" /></> 
+        : <><NewsByCategory categoryId={selectedLocation} scroll={scrollStatus} /></>}</> 
+      : <>{refreshing ? <News refreshing={refreshing} key="news" /> : <News scroll={scrollStatus} />}</>} */}
         </View>
       </ScrollView>
 
@@ -333,7 +362,10 @@ const styles = StyleSheet.create({
   locationText: {
     fontSize: 18,
     fontWeight: '800'
-  }
+  },
+  scrollView: {
+    zIndex: 1, // Set the zIndex property to control the stacking order
+  },
 
 });
 
