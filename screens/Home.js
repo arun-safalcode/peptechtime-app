@@ -14,11 +14,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import NewsByCategory from '../components/NewsByCategory';
 import { TouchableRipple } from 'react-native-paper';
 import { useNavigation } from "@react-navigation/core";
-import { getPushDataObject } from 'native-notify';
+// import { getPushDataObject } from 'native-notify';
 import { Entypo } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { usePushNotifications } from "../usePushNotifications";
 
 
 const Home = () => {
@@ -34,16 +35,45 @@ const Home = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
   const [scrollStatus, setScrollStatus] = useState(false)
   const [selectedLocation, setSelectedLocation] = useState(null);
+  const { expoPushToken, notification } = usePushNotifications();
 
-  let pushDataObject = getPushDataObject();
-  useEffect(() => {
-    if (pushDataObject.id) {
-      const item = {
-        id: pushDataObject.id
+  // let pushDataObject = getPushDataObject();
+
+  const uploadDeviceToken = async (deviceToken) => {
+    try {
+      // Define the API endpoint URL
+      const apiUrl = 'https://peptechtime.com/wp-json/push-notification-handler/v1/save-device-token';
+  
+      // Create an object containing the data you want to send in the request body
+      const data = {
+        device_token: deviceToken,
       };
-      navigation.navigate("Details", { item });
+  
+      // Make the POST request using Axios
+      const response = await axios.post(apiUrl, data);
+  
+      // Handle the response
+      console.log('Response:', response.data);
+  
+      // You can perform additional actions based on the response here
+    } catch (error) {
+      // Handle any errors that occurred during the request
+      console.error('Error:', error);
     }
-  }, [pushDataObject])
+  };
+
+  useEffect(() => {
+      if(expoPushToken){
+        uploadDeviceToken(expoPushToken.data)
+      }
+  }, [expoPushToken])
+
+  useEffect(() => {
+    console.log("notificationdadta===",notification)
+}, [])
+
+
+  console.log("old====",expoPushToken);
 
 
   const fetchCategories = async () => {
