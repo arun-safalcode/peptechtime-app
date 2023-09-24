@@ -253,7 +253,7 @@ const Home = () => {
                     start={{ x: 0, y: 0 }} // Start point of the gradient
                     end={{ x: 1, y: 0 }} // End point of the gradient\
                     style={styles.categoryItem}
-                    key={category.id}
+                    key={index}
                   >
                     <View>
                       <Text style={{ color: category.id === catid && categoryClicked ? "#fff" : "#990F0F", fontWeight: 'bold' }}>{category.name}</Text>

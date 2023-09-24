@@ -67,11 +67,11 @@ const HomeStack = () => {
 
 
 const App = () => {
-  registerNNPushToken(9590, 'RIjT7ppebM4Hcf4PrfRDcP');
-  const pushDataObject = getPushDataObject();
+  // registerNNPushToken(12533, 'QFIzXeVDiPd0Ab7hty1vpy');
+  // const pushDataObject = getPushDataObject();
 
-  // useEffect(() => {
-  //   Alert.alert(pushDataObject)
+  // React.useEffect(() => {
+  //   console.log(pushDataObject)
   // }, [pushDataObject]);
 
   const [hideSplashScreen, setHideSplashScreen] = React.useState(true);
