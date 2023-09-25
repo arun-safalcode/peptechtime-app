@@ -2,7 +2,7 @@
   "expo": {
     "name": "Peptech Time",
     "slug": "peptech",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -25,7 +25,7 @@
       },
       "package": "com.peptechtime.com",
       "googleServicesFile":"./google-services.json",
-      "versionCode":2
+      "versionCode":3
     },
     "web": {
       "favicon": "./assets/favicon.png"
